@@ -21,7 +21,7 @@ class FaceTracker:
     """
     def calculate_rotation_angle(self, x, z):
         angle = self._calculate_angle(x, z)
-        if math.abs(angle) <= FaceTracker.DEAD_ZONE_ANGLE:
+        if abs(angle) <= FaceTracker.DEAD_ZONE_ANGLE:
             return 0
         else:
             return angle
