@@ -2,8 +2,8 @@ import math
 
 
 class FaceTracker:
-    DEAD_ZONE_ANGLE = math.pi/40 # in radians
-    INTERLENS_DISTANCE = 0.065 # in meters
+    DEAD_ZONE_ANGLE = 0 # in radians
+    INTERLENS_DISTANCE = 0.12 # in meters
     FOV = math.pi/4 # fov of the lens
 
     """
@@ -27,14 +27,12 @@ class FaceTracker:
             return angle
 
     def _calculate_angle(self, x, z):
-        scene_width = self._calculate_scene_width(z)
-        m = scene_width/2
         d = FaceTracker.INTERLENS_DISTANCE
-        if x <= m + d/2:
-            x_gamma = m + d/2 - x
+        if x <= d/2:
+            x_gamma = -x + d/2
             rotation = 1
         else:
-            x_gamma = x - (m + d/2)
+            x_gamma = x - d/2
             rotation = -1
         gamma = math.atan(x_gamma/z) * rotation
 

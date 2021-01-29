@@ -19,7 +19,7 @@ def radians_to_degrees(angle):
 
 def listener():
     rospy.init_node('listener', anonymous=True)
-    rospy.Subscriber('topic', Point32, callback)
+    rospy.Subscriber('/human_recognition/clientPosition', Point32, callback)
     rospy.spin()
 
 if __name__ == '__main__':
