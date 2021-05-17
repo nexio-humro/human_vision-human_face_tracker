@@ -7,6 +7,7 @@ import rospy
 from std_msgs.msg import String
 
 from face_tracker.face_tracker import FaceTracker
+from std_msgs.msg import Float64
 
 pub = rospy.Publisher('/controllers/head_position_controller/command', Float64, queue_size=10)
 pozycja = 0
