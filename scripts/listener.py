@@ -7,29 +7,38 @@ import rospy
 from std_msgs.msg import String
 
 from face_tracker.face_tracker import FaceTracker
-from std_msgs.msg import Float32
+from std_msgs.msg import Float64
 
-pub = rospy.Publisher('/ll_controller/servo_yaw/command', Float32, queue_size=10)
+pub = rospy.Publisher('/controllers/head_position_controller/command', Float64, queue_size=10)
 pozycja = 0
 
 def callback(data):
-    rospy.loginfo("helo")
+  #  rospy.loginfo("helo")
   #  rospy.loginfo(f'Received coordinates ({data.x:.2f}, {data.y:.2f}, {data.z:.2f})')
     angle = FaceTracker().calculate_rotation_angle(data.x, data.z)
-    angle_degrees = radians_to_degrees(angle)
+  #  angle_degrees = radians_to_degrees(angle)
     global pozycja
     
 	
-    if not math.isnan(angle_degrees):
-        pozycja += angle_degrees * 0.1
-	if pozycja > 60:
-            pozycja = 60
+#    if not math.isnan(angle_degrees):
+    if not math.isnan(angle):
+     #   pozycja += angle_degrees * 0.1
+	pozycja -= angle * 0.1
+#	pozycja = angle
 
-        if pozycja < -60:
-            pozycja =-60
+#	if pozycja > 60:
+#            pozycja = 60
+	if pozycja > 1.0:
+            pozycja = 1.0
+
+#        if pozycja < -60:
+#            pozycja =-60
+        if pozycja < -1.0:
+            pozycja =-1.0
     
     pub.publish(pozycja)
   #  rospy.loginfo(f'Calculated angle = {angle:.2f} radians, angle = {angle_degrees:.2f} degrees')
+    rospy.loginfo("Calculated angle = %.2f radians, pozycja = %.2f", angle, pozycja)
 
 def radians_to_degrees(angle):
     return angle/(2*math.pi) * 360
